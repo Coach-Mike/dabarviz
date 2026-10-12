@@ -1,0 +1,14 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --arc-emerald: #10b981;
+  --arc-gold: #f59e0b;
+  --arc-rose: #f43f5e;
+  --arc-violet: #8b5cf6;
+}
+
+body {
+  background: radial-gradient(ellipse at center, #0a0a1a 0%, #000000 70%);
+}
