@@ -3,12 +3,18 @@
 @tailwind utilities;
 
 :root {
-  --arc-emerald: #10b981;
-  --arc-gold: #f59e0b;
-  --arc-rose: #f43f5e;
-  --arc-violet: #8b5cf6;
+  --bg: #050510;
+  --panel: rgba(255,255,255,0.04);
+  --border: rgba(255,255,255,0.08);
 }
 
 body {
-  background: radial-gradient(ellipse at center, #0a0a1a 0%, #000000 70%);
+  background: radial-gradient(ellipse at 50% 30%, #0c0c20 0%, #000000 70%);
+  color: #e5e7eb;
+}
+
+.panel {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  backdrop-filter: blur(12px);
 }
