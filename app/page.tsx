@@ -22,8 +22,9 @@ const books = [
   "Jude", "Revelation"
 ];
 
-function getBook(ref: string) {
-  return ref.split(" ")[0].replace(/[0-9]/g, "").trim() || ref.split(" ")[0];
+function getBook(ref: string): string {
+  const match = ref.match(/^((?:[1-3]\s+)?[A-Za-z]+)/);
+  return match ? match[1].trim() : ref.split(":")[0];
 }
 
 export default function Home() {
@@ -46,7 +47,6 @@ export default function Home() {
       </header>
 
       <div className="flex-1 flex overflow-hidden">
-        {/* Education Panel */}
         <aside className="w-96 border-r border-white/5 p-7 overflow-y-auto bg-gradient-to-b from-white/[0.02] to-transparent">
           <div className="text-[10px] uppercase tracking-[0.2em] text-white/30 mb-4">Education</div>
           <h2 className="text-3xl font-light mb-1 tracking-tight">{selected.from}</h2>
@@ -69,14 +69,13 @@ export default function Home() {
           <div className="text-xs text-white/40 mt-2">{(selected.strength * 100).toFixed(0)}%</div>
         </aside>
 
-        {/* Arc Canvas */}
         <main className="flex-1 relative bg-[radial-gradient(ellipse_at_center,_#0a0a1f_0%,_#000_70%)] overflow-hidden">
-          <div className="absolute top-6 left-0 right-0 text-center">
+          <div className="absolute top-6 left-0 right-0 text-center z-10">
             <h1 className="text-2xl font-light tracking-tight">Multi-Book Arcs</h1>
             <p className="text-xs text-white/40 mt-1">Arcs originate at Genesis and land on later books</p>
           </div>
 
-          <svg viewBox="0 0 1000 500" className="w-full h-full absolute inset-0" preserveAspectRatio="xMidYMid meet">
+          <svg viewBox="0 0 1000 520" className="w-full h-full absolute inset-0" preserveAspectRatio="xMidYMid meet">
             <defs>
               <linearGradient id="arcGrad" x1="0%" y1="0%" x2="100%" y2="0%">
                 <stop offset="0%" stopColor="#34d399" />
@@ -92,15 +91,14 @@ export default function Home() {
               </filter>
             </defs>
 
-            {/* Origin point */}
-            <circle cx="80" cy="420" r="5" fill="#34d399" />
-            <text x="80" y="445" textAnchor="middle" fill="rgba(255,255,255,0.6)" fontSize="12">Genesis</text>
+            <circle cx="90" cy="440" r="6" fill="#34d399" />
+            <text x="90" y="465" textAnchor="middle" fill="rgba(255,255,255,0.7)" fontSize="13">Genesis</text>
 
-            {/* Target points and arcs */}
             {targets.map((book, i) => {
-              const x = 200 + (i * (700 / Math.max(targets.length - 1, 1)));
-              const y = 420;
-              const midY = 120 + (i % 3) * 40;
+              const count = Math.max(targets.length, 1);
+              const x = 180 + (i * (760 / Math.max(count - 1, 1)));
+              const y = 440;
+              const midY = 80 + (i % 4) * 50;
               const conn = connections.find(c => getBook(c.to) === book);
               const isActive = selected && getBook(selected.to) === book;
               const isHover = hovered === book;
@@ -108,13 +106,13 @@ export default function Home() {
               return (
                 <g key={book}>
                   <path
-                    d={`M 80 420 Q ${(80 + x) / 2} ${midY} ${x} ${y}`}
+                    d={`M 90 440 Q ${(90 + x) / 2} ${midY} ${x} ${y}`}
                     fill="none"
                     stroke={isActive || isHover ? "#fbbf24" : "url(#arcGrad)"}
-                    strokeWidth={isActive || isHover ? 3.5 : 1.8}
-                    opacity={isActive || isHover ? 1 : 0.55}
+                    strokeWidth={isActive || isHover ? 4 : 2}
+                    opacity={isActive || isHover ? 1 : 0.6}
                     filter="url(#glow)"
-                    className="cursor-pointer"
+                    style={{ cursor: "pointer" }}
                     onClick={() => conn && setSelected(conn)}
                     onMouseEnter={() => setHovered(book)}
                     onMouseLeave={() => setHovered(null)}
@@ -122,18 +120,18 @@ export default function Home() {
                   <circle
                     cx={x}
                     cy={y}
-                    r={isActive || isHover ? 6 : 4}
+                    r={isActive || isHover ? 7 : 5}
                     fill={isActive || isHover ? "#fbbf24" : "#a78bfa"}
-                    className="cursor-pointer"
+                    style={{ cursor: "pointer" }}
                     onClick={() => conn && setSelected(conn)}
                   />
                   <text
                     x={x}
-                    y={y + 22}
+                    y={y + 24}
                     textAnchor="middle"
-                    fill="rgba(255,255,255,0.7)"
-                    fontSize="11"
-                    className="cursor-pointer"
+                    fill="rgba(255,255,255,0.75)"
+                    fontSize="12"
+                    style={{ cursor: "pointer" }}
                     onClick={() => conn && setSelected(conn)}
                   >
                     {book}
@@ -143,12 +141,11 @@ export default function Home() {
             })}
           </svg>
 
-          <div className="absolute bottom-4 left-0 right-0 text-center text-[10px] uppercase tracking-[0.2em] text-white/25">
+          <div className="absolute bottom-4 left-0 right-0 text-center text-[10px] uppercase tracking-[0.2em] text-white/25 z-10">
             Click any arc. The education card updates with the connection.
           </div>
         </main>
 
-        {/* Books List */}
         <aside className="w-64 border-l border-white/5 p-5 overflow-y-auto bg-gradient-to-b from-white/[0.02] to-transparent">
           <div className="text-[10px] uppercase tracking-[0.2em] text-white/30 mb-4">Books</div>
           <div className="space-y-0.5">
