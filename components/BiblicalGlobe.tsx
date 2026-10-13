@@ -12,13 +12,13 @@ export default function BiblicalGlobe({ onSelect }: { onSelect: (place: string) 
     setIsDragging(true);
     startX.current = e.clientX;
     startRot.current = rotation;
-    (e.target as HTMLElement).setPointerCapture(e.pointerId);
+    (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
   };
 
   const handlePointerMove = (e: React.PointerEvent) => {
     if (!isDragging) return;
     const delta = e.clientX - startX.current;
-    setRotation(startRot.current + delta * 0.5);
+    setRotation(startRot.current + delta * 0.6);
   };
 
   const handlePointerUp = () => setIsDragging(false);
@@ -26,7 +26,7 @@ export default function BiblicalGlobe({ onSelect }: { onSelect: (place: string) 
   return (
     <div className="w-full h-full flex items-center justify-center">
       <div
-        className="relative w-48 h-48 cursor-grab active:cursor-grabbing select-none"
+        className="relative w-52 h-52 cursor-grab active:cursor-grabbing select-none touch-none"
         onPointerDown={handlePointerDown}
         onPointerMove={handlePointerMove}
         onPointerUp={handlePointerUp}
@@ -34,12 +34,12 @@ export default function BiblicalGlobe({ onSelect }: { onSelect: (place: string) 
         onClick={() => onSelect("Jerusalem")}
         style={{ transform: `rotateY(${rotation}deg)` }}
       >
-        <div className="absolute inset-0 rounded-full bg-gradient-to-br from-blue-900/40 via-slate-800/60 to-amber-900/30 border border-white/15 shadow-[0_0_80px_rgba(59,130,246,0.2)]" />
-        <div className="absolute inset-6 rounded-full border border-white/10" />
-        <div className="absolute inset-0 flex items-center justify-center text-[10px] uppercase tracking-[0.25em] text-white/40">
+        <div className="absolute inset-0 rounded-full bg-gradient-to-br from-blue-900/50 via-slate-800/70 to-amber-900/40 border border-white/20 shadow-[0_0_100px_rgba(59,130,246,0.25)]" />
+        <div className="absolute inset-8 rounded-full border border-white/15" />
+        <div className="absolute inset-0 flex items-center justify-center text-[11px] uppercase tracking-[0.3em] text-white/50 font-medium">
           Biblical Globe
         </div>
-        <div className="absolute top-1/2 left-1/2 w-2 h-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-amber-400 shadow-[0_0_12px_#fbbf24]" />
+        <div className="absolute top-1/2 left-1/2 w-2.5 h-2.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-amber-400 shadow-[0_0_16px_#fbbf24]" />
       </div>
     </div>
   );
