@@ -1,0 +1,14 @@
+[
+  {"id":"gen1-1-john1-1","from":"Genesis 1:1","to":"John 1:1","type":"Structural Parallel","strength":0.98,"evidence":"Both open with ‘In the beginning.’ Genesis uses divine speech; John identifies the Word as the agent of creation."},
+  {"id":"gen1-3-john1-4","from":"Genesis 1:3","to":"John 1:4-5","type":"Thematic Echo","strength":0.94,"evidence":"‘Let there be light’ is fulfilled in the Light that shines in the darkness and is not overcome."},
+  {"id":"gen1-26-john1-14","from":"Genesis 1:26-27","to":"John 1:14","type":"Theological Parallel","strength":0.90,"evidence":"Humanity made in God’s image; the Word becomes flesh and tabernacles among us."},
+  {"id":"gen1-1-col1-16","from":"Genesis 1:1","to":"Colossians 1:16","type":"Allusion","strength":0.91,"evidence":"All things created through Christ, echoing the creative work of God in Genesis 1."},
+  {"id":"gen2-7-1cor15-45","from":"Genesis 2:7","to":"1 Corinthians 15:45","type":"Typology","strength":0.93,"evidence":"Adam as the first man; Christ as the last Adam and life-giving spirit."},
+  {"id":"gen3-15-rom5-12","from":"Genesis 3:15","to":"Romans 5:12-19","type":"Prophecy-Fulfillment","strength":0.96,"evidence":"The promised seed who crushes the serpent’s head; Christ as the second Adam."},
+  {"id":"gen3-15-gal4-4","from":"Genesis 3:15","to":"Galatians 4:4","type":"Prophecy-Fulfillment","strength":0.89,"evidence":"The seed of the woman fulfilled in the Son born of a woman."},
+  {"id":"gen12-3-gal3-8","from":"Genesis 12:3","to":"Galatians 3:8","type":"Quotation","strength":0.97,"evidence":"Paul explicitly cites the Abrahamic promise that all nations would be blessed."},
+  {"id":"gen15-6-rom4-3","from":"Genesis 15:6","to":"Romans 4:3","type":"Quotation","strength":0.99,"evidence":"Abraham believed God and it was counted to him as righteousness — foundational for justification by faith."},
+  {"id":"gen22-18-heb11-17","from":"Genesis 22:18","to":"Hebrews 11:17-19","type":"Typology","strength":0.92,"evidence":"Abraham’s offering of Isaac as a type of God offering his only Son."},
+  {"id":"gen28-12-john1-51","from":"Genesis 28:12","to":"John 1:51","type":"Allusion","strength":0.88,"evidence":"Jacob’s ladder; Jesus declares himself the connection between heaven and earth."},
+  {"id":"gen49-10-rev5-5","from":"Genesis 49:10","to":"Revelation 5:5","type":"Prophecy-Fulfillment","strength":0.95,"evidence":"The scepter shall not depart from Judah; the Lion of the tribe of Judah has conquered."}
+]
