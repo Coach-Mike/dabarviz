@@ -21,6 +21,11 @@ const books = [
   "James", "1 Peter", "2 Peter", "1 John", "2 John", "3 John", "Jude", "Revelation"
 ];
 
+function getBookIndex(bookName: string) {
+  const name = bookName.split(" ")[0].replace(/\d+/, "").trim();
+  return books.findIndex(b => b.startsWith(name) || name.startsWith(b.split(" ")[0]));
+}
+
 export default function Home() {
   const [focus, setFocus] = useState<Connection | null>(connections[0]);
   const [depth, setDepth] = useState(1);
@@ -56,51 +61,81 @@ export default function Home() {
             <div className="text-sm text-emerald-400/80">{focus.type}</div>
           </>
         ) : (
-          <div className="text-white/40 text-sm">Select a connection line to study.</div>
+          <div className="text-white/40 text-sm">Select a connection arc to study.</div>
         )}
       </aside>
 
-      {/* MIDDLE — Mapping Canvas (Infinite Scroll) */}
+      {/* MIDDLE — Mapping Canvas with Multi-Book Arcs */}
       <main className="flex-1 relative overflow-y-auto">
-        <div className="min-h-[200vh] px-12 py-16">
-          <div className="text-center mb-12">
+        <div className="min-h-[180vh] relative">
+          <div className="text-center pt-16 pb-8">
             <div className="text-[10px] uppercase tracking-[0.3em] text-white/30 mb-2">DabarViz</div>
             <h1 className="text-4xl font-light tracking-tight">The Living Map</h1>
-            <p className="text-white/40 text-sm mt-2">Click a line to expand. Continue to drill into Genesis.</p>
+            <p className="text-white/40 text-sm mt-2">Arcs span from Genesis to later books. Click to expand and drill.</p>
           </div>
 
-          {/* Connection Lines */}
-          <div className="relative space-y-8">
-            {visibleConnections.map((c, i) => (
-              <button
-                key={c.id}
-                onClick={() => {
-                  setFocus(c);
-                  if (depth < 3) setDepth(d => d + 1);
-                }}
-                className={`w-full text-left group relative ${
-                  focus?.id === c.id ? "opacity-100" : "opacity-70 hover:opacity-100"
-                }`}
-              >
-                <div className="flex items-center gap-4">
-                  <div className="flex-1 h-px bg-gradient-to-r from-emerald-400/40 via-amber-300/40 to-violet-400/40 group-hover:from-emerald-400 group-hover:via-amber-300 group-hover:to-violet-400 transition-all" />
-                  <div className={`px-4 py-2 rounded-full text-sm border transition-all ${
-                    focus?.id === c.id
-                      ? "bg-white/10 border-white/30"
-                      : "bg-white/[0.03] border-white/10 group-hover:border-white/20"
-                  }`}
-                  >
-                    {c.from} → {c.to}
-                  </div>
-                  <div className="flex-1 h-px bg-gradient-to-l from-emerald-400/40 via-amber-300/40 to-violet-400/40 group-hover:from-emerald-400 group-hover:via-amber-300 group-hover:to-violet-400 transition-all" />
-                </div>
-                <div className="text-[10px] text-white/30 mt-1 text-center">{c.type}</div>
-              </button>
-            ))}
+          {/* Arc Canvas */}
+          <div className="relative h-[600px] mx-8">
+            <svg viewBox="0 0 1000 600" className="w-full h-full absolute inset-0" preserveAspectRatio="xMidYMid meet">
+              <defs>
+                <linearGradient id="arcGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stopColor="#34d399" />
+                  <stop offset="50%" stopColor="#fbbf24" />
+                  <stop offset="100%" stopColor="#a78bfa" />
+                </linearGradient>
+                <filter id="glow">
+                  <feGaussianBlur stdDeviation="3" result="coloredBlur" />
+                  <feMerge>
+                    <feMergeNode in="coloredBlur" />
+                    <feMergeNode in="SourceGraphic" />
+                  </feMerge>
+                </filter>
+              </defs>
+
+              {/* Book axis labels (simplified) */}
+              <text x="40" y="580" fill="rgba(255,255,255,0.3)" fontSize="11" textAnchor="start">Genesis</text>
+              <text x="960" y="580" fill="rgba(255,255,255,0.3)" fontSize="11" textAnchor="end">Revelation</text>
+
+              {visibleConnections.map((c, i) => {
+                const startX = 60;
+                const endIndex = Math.max(1, getBookIndex(c.to.split(" ")[0] || c.to));
+                const endX = 60 + (endIndex / books.length) * 880;
+                const height = 80 + (i % 5) * 60;
+                const isFocused = focus?.id === c.id;
+
+                return (
+                  <g key={c.id}>
+                    <path
+                      d={`M ${startX} 560 Q ${(startX + endX) / 2} ${560 - height} ${endX} 560`}
+                      fill="none"
+                      stroke={isFocused ? "#fbbf24" : "url(#arcGrad)"}
+                      strokeWidth={isFocused ? 3 : 1.5}
+                      opacity={isFocused ? 1 : 0.5}
+                      filter={isFocused ? "url(#glow)" : undefined}
+                      className="cursor-pointer"
+                      onClick={() => {
+                        setFocus(c);
+                        if (depth < 3) setDepth(d => d + 1);
+                      }}
+                    />
+                    <text
+                      x={(startX + endX) / 2}
+                      y={560 - height - 12}
+                      fill={isFocused ? "#fbbf24" : "rgba(255,255,255,0.5)"}
+                      fontSize="10"
+                      textAnchor="middle"
+                      className="pointer-events-none"
+                    >
+                      {c.to.split(" ")[0]}
+                    </text>
+                  </g>
+                );
+              })}
+            </svg>
           </div>
 
-          <div className="mt-24 text-center text-white/30 text-sm">
-            {depth < 3 ? "Click any line to expand deeper into the connections." : "Full Genesis connection set visible."}
+          <div className="px-12 pb-24 text-center text-white/30 text-sm">
+            {depth < 3 ? "Click an arc to expand deeper into the connections." : "Full set of Genesis arcs visible."}
           </div>
         </div>
       </main>
